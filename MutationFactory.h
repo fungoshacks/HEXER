@@ -6,8 +6,7 @@
 
 using namespace std;
 
-class 
-MutationFactory
+class MutationFactory
 {
     private:
 	string _corpus_dir;
