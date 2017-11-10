@@ -1,5 +1,5 @@
 #include "Mutator.h"
-int POPCOUNT_LOT[256]
+int POPCOUNT_LOT[256];
 
 Mutator::Mutator(){
  /* For 8 bit lookup */
