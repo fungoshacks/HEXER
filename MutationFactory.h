@@ -9,10 +9,10 @@ using namespace std;
 class MutationFactory
 {
     private:
-	string _corpus_dir;
-	vector<Mutator> _mutators;
+        string _corpus_dir;
+        vector<string> corpus_paths;
+        vector<Mutator> _mutators;
     public:
-	MutationFactory(string);
-	Mutation new_mutation();
-
+        MutationFactory(string);
+        Mutation new_mutation();
 };

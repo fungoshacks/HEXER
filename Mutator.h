@@ -4,8 +4,11 @@
 #include <String>
 class Mutator
 {
+    private:
+        int _h_dist;
+        float dist(string reference, string probe);
     public:
-	Mutator();
-	virtual Mutation mutate();
-	float dist(string reference, string probe);
+        Mutator();
+        virtual Mutation mutate(string);
+        void setH_dist(int);
 };
