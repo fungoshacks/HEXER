@@ -10,7 +10,7 @@ class MutationFactory
 {
     private:
         string _corpus_dir;
-        vector<string> corpus_paths;
+        vector<string> __corpus_paths;
         vector<Mutator> _mutators;
     public:
         MutationFactory(string);

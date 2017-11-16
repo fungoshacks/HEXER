@@ -1,3 +1,5 @@
+#include "MutationFactory.h"
+
 MutationFactory::MutationFactory(string corpus_dir)
 {
    _corpus_dir = corpus_dir;

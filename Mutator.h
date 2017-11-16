@@ -1,7 +1,8 @@
 #pragma once
 #include "Mutation.h"
 #include <fstream>
-#include <String>
+#include <string>
+
 class Mutator
 {
     private:
@@ -9,6 +10,5 @@ class Mutator
         float dist(string reference, string probe);
     public:
         Mutator();
-        virtual Mutation mutate(string);
-        void setH_dist(int);
+        virtual Mutation mutate(string){return Mutation();};
 };
