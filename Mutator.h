@@ -6,9 +6,8 @@
 class Mutator
 {
     private:
-        int _h_dist;
-        float dist(string reference, string probe);
+        int _cycles;
     public:
-        Mutator();
+        Mutator(int cycles);
         virtual Mutation mutate(string){return Mutation();};
 };

@@ -1,4 +1,6 @@
 #include "Mutator.h"
+#include "windows.h"
+
 //const int Popcnt8[256] = {
 //	0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4,
 //	1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5,
@@ -18,9 +20,9 @@
 //	4, 5, 5, 6, 5, 6, 6, 7, 5, 6, 6, 7, 6, 7, 7, 8
 //};
 
-Mutator::Mutator()
+Mutator::Mutator(int cycles)
 {
-
+    _cycles = cycles;
 }
 
 //float Mutator::dist(string reference, string probe) {

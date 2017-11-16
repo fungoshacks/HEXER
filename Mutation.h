@@ -6,8 +6,16 @@ using namespace std;
 class
 Mutation
 {
+    private:
+        string _corpus;
+        string _mutation_path;
+        string _report;
+
     public:
+        void setCorpus(string);
         string getCorpus();
+        void setMutationPath(string);
         string getMutationPath();
-        string getReport(); // Aus dem Report sollten wir auch noch ne Klasse machen, damit wir da elegant report.create_report() machen koennen.
+        void setReport(string);
+        string getReport(); 
 };
