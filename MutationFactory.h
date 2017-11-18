@@ -12,7 +12,7 @@ class MutationFactory
 {
     private:
         vector<string>  _corpus_paths;
-        vector<Mutator *> _mutators = {new BitFlip(4)};
+        vector<Mutator *> _mutators = {new BitFlip(0)};
     public:
         MutationFactory(string);
         Mutation *new_mutation();

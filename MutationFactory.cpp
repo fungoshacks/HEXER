@@ -28,7 +28,7 @@ MutationFactory::new_mutation()
 {
    Mutation *mut;
    Mutator *mut_tmp = _mutators[0];
-   mut = mut_tmp->mutate(_corpus_paths[1]);
+   mut = mut_tmp->mutate(_corpus_paths[0]);
 
    return mut;
 }
