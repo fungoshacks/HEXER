@@ -3,7 +3,6 @@
 #include <vector>
 #include "time.h"
 #include "windows.h"
-#include "Mutation.h"
 #include "Mutator.h"
 #include "BitFlip.h"
 
@@ -13,8 +12,8 @@ class MutationFactory
 {
     private:
         vector<string>  _corpus_paths;
-        vector<Mutator> _mutators(BitFlip());
+        vector<Mutator *> _mutators = {new BitFlip(4)};
     public:
         MutationFactory(string);
-        Mutation new_mutation();
+        Mutation *new_mutation();
 };

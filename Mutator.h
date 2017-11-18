@@ -9,5 +9,5 @@ class Mutator
         int _cycles;
     public:
         Mutator(int cycles);
-        virtual Mutation mutate(string){return Mutation();};
+        virtual Mutation* mutate(string){return (new Mutation());};
 };

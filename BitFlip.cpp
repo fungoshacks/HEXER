@@ -1,21 +1,22 @@
 #include "BitFlip.h"
 
-Mutation 
+Mutation *
 BitFlip::mutate(string corpus)
 {
 
-    Mutation mutation;
+    Mutation *mutation;
     FILE *f_mutation;
     int rand_offset, f_size;
     int xor_values[8] = {1,2,4,8,16,32,64,128};
     unsigned char x;
 
-    mutation.setCorpus(corpus);
-    mutation.setMutationPath(tmpnam(NULL));
+    mutation = new Mutation();
+    mutation->setCorpus(corpus);
+    mutation->setMutationPath(tmpnam(NULL));
 
     /* Create a copy of corpus to mutate with */
-    CopyFile(corpus.c_str(), mutation.getMutationPath().c_str(), false);
-    f_mutation = fopen(mutation.getMutationPath().c_str(), "r+");
+    CopyFile(corpus.c_str(), mutation->getMutationPath().c_str(), false);
+    f_mutation = fopen(mutation->getMutationPath().c_str(), "r+");
 
     if ( f_mutation != NULL ) {
 

@@ -5,7 +5,9 @@
 #include "Windows.h"
 
 class 
-BitFlip:Mutator
+BitFlip:public Mutator
 {
-    Mutation mutate(string);
+    using Mutator::Mutator;
+    public:
+        Mutation *mutate(string);
 };
