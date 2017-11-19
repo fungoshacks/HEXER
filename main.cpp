@@ -1,6 +1,7 @@
 #include "ProcessMonitor.h"
 #include "MutationFactory.h"
 #include "Mutation.h"
+#include <thread>
 
 void usage();
 void work(string, string);
@@ -12,12 +13,24 @@ main(int argc, char *argv[])
     if ( argc < 3 )
         usage();
 
-    string path_exe, path_corpuses;
+	string path_exe = "";
+	string path_corpuses = "";
+	const int NUM_THREADS = 10;
 
     path_exe = argv[1];
     path_corpuses = argv[2];
+	//NUM_THREADS = atoi(argv[3]); //has to be const value
+	std::thread threads[NUM_THREADS];
+
+	for (unsigned int i = 0; i < NUM_THREADS; i++) {
+		threads[i] = std::thread(work,path_exe, path_corpuses);
+	}
+
+	for (unsigned int i = 0; i < NUM_THREADS; i++) {
+		threads[i].join();
+	}
     
-    work(path_exe, path_corpuses);
+    //work(path_exe, path_corpuses);
 
     return 0;
 }
