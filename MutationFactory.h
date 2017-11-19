@@ -5,6 +5,7 @@
 #include "windows.h"
 #include "Mutator.h"
 #include "BitFlip.h"
+#include "ByteReplace.h"
 
 using namespace std;
 
