@@ -1,6 +1,7 @@
 #include "ProcessMonitor.h"
 #include "MutationFactory.h"
 #include "Mutation.h"
+#include "time.h"
 #include <thread>
 
 void usage();
@@ -43,7 +44,7 @@ work(string path_exe, string path_corpuses, int seed)
    MutationFactory mut_factory(path_corpuses);
    bool crashed = false;
 
-   srand(seed);
+   srand(time(NULL) + seed);
    while ( true ) {
 
        mut_tmp = mut_factory.new_mutation();
@@ -51,9 +52,13 @@ work(string path_exe, string path_corpuses, int seed)
 
        if ( crashed ) {
            check_crash(path_exe, mut_tmp->getMutationPath());
-	   crashed = false;
+    	   crashed = false;
        } else {
-           remove(mut_tmp->getMutationPath().c_str());
+           try{
+               remove(mut_tmp->getMutationPath().c_str());
+           }catch(int e){
+               printf("Couldnt remove\n");
+           }
        }
 
        delete mut_tmp;

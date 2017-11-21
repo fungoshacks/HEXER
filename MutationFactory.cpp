@@ -25,6 +25,7 @@ MutationFactory::MutationFactory(string corpus_dir)
 Mutation *
 MutationFactory::new_mutation()
 {
+
    Mutation *mut;
    Mutator *mut_tmp = _mutators[0];
    mut = mut_tmp->mutate(_corpus_paths[rand() % _corpus_paths.size()]);
