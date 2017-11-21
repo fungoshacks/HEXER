@@ -18,6 +18,8 @@ ByteRepeate::mutate(string corpus)
 	/* Create a copy of corpus to mutate with */
 	CopyFile(corpus.c_str(), mutation->getMutationPath().c_str(), false);
 	f_mutation = fopen(mutation->getMutationPath().c_str(), "wb+"); //open binary
+	string tempFilename = mutation->getMutationPath().append("tmp____");
+	tempFile = fopen(tempFilename.c_str(), "wb+"); //open binary
 
 	unsigned int val[4] = { 0, 128, 196, 255};
 	unsigned int repeat[10] = { 1, 10, 32, 64, 128, 256, 512, 8, 16, 1024 };
