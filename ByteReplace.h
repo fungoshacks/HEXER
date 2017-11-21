@@ -8,10 +8,10 @@
 #include <vector>
 
 class ByteReplace :
-	public Mutation
+	public Mutator
 {
 public:
-	//using Mutator::Mutator;
+	using Mutator::Mutator;
 	Mutation *mutate(string);
 };
 

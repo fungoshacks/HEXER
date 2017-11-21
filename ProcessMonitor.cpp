@@ -38,7 +38,7 @@ ProcessMonitor::_debugloop(HANDLE p_handle)
 
     while ( TRUE ) {
 
-	   if ( WaitForDebugEvent(&event, (DWORD)1000)){
+	   if ( WaitForDebugEvent(&event, (DWORD)3000)){
 
 		   switch (event.dwDebugEventCode){
 			   
@@ -62,9 +62,8 @@ ProcessMonitor::_debugloop(HANDLE p_handle)
 
 
 	   }else {
-		   printf("[!] Timeout\n");
 		   TerminateProcess(p_handle, 0);
-		   return FALSE;
+		   return false;
 	   }
     }
         

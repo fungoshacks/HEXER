@@ -4,7 +4,7 @@
 #include <thread>
 
 void usage();
-void work(string, string);
+void work(string, string, int);
 void check_crash(string, string);
 
 int 
@@ -13,31 +13,29 @@ main(int argc, char *argv[])
     if ( argc < 3 )
         usage();
 
-	string path_exe = "";
-	string path_corpuses = "";
-	const int NUM_THREADS = 10;
+    string path_exe = "";
+    string path_corpuses = "";
+    const int NUM_THREADS = 10;
+    std::thread threads[NUM_THREADS];
 
     path_exe = argv[1];
     path_corpuses = argv[2];
-	//NUM_THREADS = atoi(argv[3]); //has to be const value
-	std::thread threads[NUM_THREADS];
+    //NUM_THREADS = atoi(argv[3]); //has to be const value
 
-	for (unsigned int i = 0; i < NUM_THREADS; i++) {
-		threads[i] = std::thread(work,path_exe, path_corpuses);
-	}
+    for (unsigned int i = 0; i < NUM_THREADS; i++) {
+	threads[i] = std::thread(work,path_exe, path_corpuses, i);
+    }
 
-	for (unsigned int i = 0; i < NUM_THREADS; i++) {
-		threads[i].join();
-	}
+    for (unsigned int i = 0; i < NUM_THREADS; i++) {
+	threads[i].join();
+    }
     
-    //work(path_exe, path_corpuses);
-
     return 0;
 }
 
 /* Multi-Thread this */
 void
-work(string path_exe, string path_corpuses)
+work(string path_exe, string path_corpuses, int seed)
 {
 
    Mutation *mut_tmp;
@@ -45,6 +43,7 @@ work(string path_exe, string path_corpuses)
    MutationFactory mut_factory(path_corpuses);
    bool crashed = false;
 
+   srand(seed);
    while ( true ) {
 
        mut_tmp = mut_factory.new_mutation();
