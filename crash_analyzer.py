@@ -4,6 +4,7 @@ import sys
 from Report import Report
 from winappdbg import Debug, Crash, win32, HexDump
 
+
 EXCEPTIONS_CATCH = [
         win32.STATUS_ACCESS_VIOLATION,
         win32.STATUS_ILLEGAL_INSTRUCTION,

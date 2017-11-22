@@ -24,10 +24,10 @@ BitFlip::mutate(string corpus)
         f_size = ftell(f_mutation);
 
         /* Hier dann fette hamming dist */
-        for ( int cycle = 0; cycle < 65; cycle ++ ) {
+        for ( int cycle = 0; cycle < 100; cycle ++ ) {
 
             rewind(f_mutation);
-            rand_offset = rand() % f_size + 1;
+            rand_offset = rand() % ( f_size - 1 );
             fseek(f_mutation, rand_offset, SEEK_SET);
             fread(&x, 1,1, f_mutation);
             fseek(f_mutation, -1, SEEK_CUR);

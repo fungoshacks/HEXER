@@ -1,5 +1,6 @@
 from winappdbg import Debug, Crash, win32, HexDump
 from winappdbg.util import MemoryAddresses
+from shutil import copyfile
 
 import string
 import random
@@ -39,8 +40,7 @@ class Report:
 
         self.f_report.close()
 
-        os.rename(self.mutation_path, self.issue_id + "_CRASH")
-        
+        copyfile(self.mutation_path, self.issue_id + "_CRASH")
         print "[!] Issue: " + self.issue_id
 
     def __get_stack( self ):
