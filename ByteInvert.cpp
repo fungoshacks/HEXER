@@ -1,5 +1,4 @@
 #include "ByteInvert.h"
-#include <iostream>
 
 unsigned char 
 ByteInvert::reverse(unsigned char b) {
@@ -17,7 +16,6 @@ ByteInvert::mutate(string corpus)
 	Mutation *mutation;
 	FILE *f_mutation;
 	int rand_offset, f_size;
-	int xor_values[8] = { 1,2,4,8,16,32,64,128 };
 	unsigned char x;
 
 	mutation = new Mutation();
@@ -33,11 +31,10 @@ ByteInvert::mutate(string corpus)
 		fseek(f_mutation, 0, SEEK_END);
 		f_size = ftell(f_mutation);
 
-		/* Hier dann fette hamming dist */
 		for (int cycle = 0; cycle < 65; cycle++) {
 
 			rewind(f_mutation);
-			rand_offset = rand() % f_size + 1;
+			rand_offset = rand() % f_size;
 			fseek(f_mutation, rand_offset, SEEK_SET);
 			fread(&x, 1, 1, f_mutation);
 			fseek(f_mutation, -1, SEEK_CUR);

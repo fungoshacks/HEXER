@@ -57,7 +57,7 @@ work(string path_exe, string path_corpuses, int seed)
            try{
                remove(mut_tmp->getMutationPath().c_str());
            }catch(int e){
-               printf("Couldnt remove\n");
+               printf("[!] Failed to remove mutation: %s\n", mut_tmp->getMutationPath().c_str());
            }
        }
 
@@ -86,10 +86,12 @@ check_crash(string path_exe, string path_mutation)
     printf("%s\n", call_string_argv);
     if (!CreateProcess(NULL, call_string_argv, NULL, NULL, TRUE, NULL, NULL, NULL, &si, &pi))
     {
-	printf("Unable to start crash checker\n");
-	printf("%s\n", call_string_argv);
-    	exit(1);
+	   printf("Unable to start crash checker\n");
+	   printf("%s\n", call_string_argv);
+       exit(1);
     }
+
+    free(call_string_argv);
 
 }
 

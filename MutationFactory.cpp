@@ -2,6 +2,7 @@
 
 MutationFactory::MutationFactory(string corpus_dir)
 {
+
    HANDLE hFind;
    WIN32_FIND_DATA data; 
    int cntr = 0;
@@ -26,9 +27,11 @@ Mutation *
 MutationFactory::new_mutation()
 {
 
-   Mutation *mut;
-   Mutator *mut_tmp = _mutators[0];
-   mut = mut_tmp->mutate(_corpus_paths[rand() % _corpus_paths.size()]);
+   Mutation *new_mutation;
+   Mutator *random_mutator = _mutators[0];
 
-   return mut;
+   new_mutation = random_mutator->mutate(_corpus_paths[rand() % (_corpus_paths.size() - 1)]);
+
+   return new_mutation;
+
 }
