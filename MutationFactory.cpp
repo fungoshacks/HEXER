@@ -16,7 +16,7 @@ MutationFactory::MutationFactory(string corpus_dir)
               continue;
            }
            _corpus_paths.push_back(string(corpus_dir).substr(0, 
-				   strlen(corpus_dir.c_str())-1).append(data.cFileName));
+				   strlen(corpus_dir.c_str()) -1 ).append(data.cFileName));
        } while (FindNextFile(hFind, &data));
        FindClose(hFind);
    }
@@ -30,7 +30,7 @@ MutationFactory::new_mutation()
    Mutation *new_mutation;
    Mutator *random_mutator = _mutators[0];
 
-   new_mutation = random_mutator->mutate(_corpus_paths[rand() % (_corpus_paths.size() - 1)]);
+   new_mutation = random_mutator->mutate(_corpus_paths[rand() % _corpus_paths.size()]);
 
    return new_mutation;
 

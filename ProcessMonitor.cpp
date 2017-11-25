@@ -19,12 +19,16 @@ ProcessMonitor::runProcess(string mutation)
     strcpy(call_string_argv, _call_string.c_str());
     strcat(call_string_argv, " ");
     strcat(call_string_argv, mutation.c_str());
+//    DebugSetProcessKillOnExit(true);
     
-    if (CreateProcess(NULL, call_string_argv, NULL, NULL, TRUE, DEBUG_PROCESS, NULL, NULL, &si, &pi))
+    if (CreateProcess(NULL, call_string_argv, NULL, NULL, FALSE, DEBUG_PROCESS, NULL, NULL, &si, &pi))
     {
 	crashed = _debugloop(pi.hProcess);
     }
 
+
+    CloseHandle(pi.hProcess);
+    CloseHandle(pi.hThread);
     free(call_string_argv);
 
     return crashed;
@@ -41,7 +45,11 @@ ProcessMonitor::_debugloop(HANDLE p_handle)
 	   if ( WaitForDebugEvent(&event, (DWORD)3000)){
 
 		   switch (event.dwDebugEventCode){
-			   
+
+			   case LOAD_DLL_DEBUG_EVENT:
+				   CloseHandle(event.u.LoadDll.hFile);
+				   break;
+
 			   case EXCEPTION_DEBUG_EVENT:
 
 				   if ( !event.u.Exception.dwFirstChance ) {
@@ -62,7 +70,9 @@ ProcessMonitor::_debugloop(HANDLE p_handle)
 
 
 	   }else {
-		   TerminateProcess(p_handle, 0);
+		   TerminateProcess(p_handle, 1);
+//		   DebugActiveProcessStop(GetProcessId(p_handle));
+		   CloseHandle(p_handle);
 		   return false;
 	   }
     }

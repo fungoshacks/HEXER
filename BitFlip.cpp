@@ -6,6 +6,7 @@ BitFlip::mutate(string corpus)
 
     Mutation *mutation;
     FILE *f_mutation;
+    string mutation_path = "tmp\\";
     int rand_offset, f_size;
     int xor_values[8] = {1,2,4,8,16,32,64,128};
     unsigned char x;
@@ -13,17 +14,16 @@ BitFlip::mutate(string corpus)
     /* Mutation object to return
      * set used corpus and the path to the mutation in the FS 
      */
+    mutation_path = random_filename(mutation_path);
     mutation = new Mutation();
     mutation->setCorpus(corpus);
-    mutation->setMutationPath(tmpnam(NULL));
+    mutation->setMutationPath(mutation_path);
 
     /* Create a copy of corpus to mutate with */
     CopyFile(corpus.c_str(), mutation->getMutationPath().c_str(), false);
     f_mutation = fopen(mutation->getMutationPath().c_str(), "r+");
 
-    try{
-
-        if ( f_mutation != NULL ) {
+    if ( f_mutation != NULL ) {
 
            fseek(f_mutation, 0, SEEK_END);
            f_size = ftell(f_mutation);
@@ -42,10 +42,8 @@ BitFlip::mutate(string corpus)
 
            fclose(f_mutation);
 
-        }
-    }catch(int e){
-        printf("[!] Unknown exception in bitflip\n");
     }
+
 
     return mutation;
 }

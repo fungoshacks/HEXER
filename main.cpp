@@ -2,6 +2,7 @@
 #include "MutationFactory.h"
 #include "Mutation.h"
 #include "time.h"
+#include <unistd.h>
 #include <thread>
 
 void usage();
@@ -14,13 +15,10 @@ main(int argc, char *argv[])
     if ( argc < 3 )
         usage();
 
-    string path_exe = "";
-    string path_corpuses = "";
     const int NUM_THREADS = 10;
+    string path_exe = argv[1];
+    string path_corpuses = argv[2];
     std::thread threads[NUM_THREADS];
-
-    path_exe = argv[1];
-    path_corpuses = argv[2];
     //NUM_THREADS = atoi(argv[3]); //has to be const value
 
     for (unsigned int i = 0; i < NUM_THREADS; i++) {
@@ -54,11 +52,7 @@ work(string path_exe, string path_corpuses, int seed)
            check_crash(path_exe, mut_tmp->getMutationPath());
     	   crashed = false;
        } else {
-           try{
-               remove(mut_tmp->getMutationPath().c_str());
-           }catch(int e){
-               printf("[!] Failed to remove mutation: %s\n", mut_tmp->getMutationPath().c_str());
-           }
+           remove(mut_tmp->getMutationPath().c_str());
        }
 
        delete mut_tmp;
@@ -83,12 +77,11 @@ check_crash(string path_exe, string path_mutation)
     strcat(call_string_argv, "\" ");
     strcat(call_string_argv, path_mutation.c_str());
 
-    printf("%s\n", call_string_argv);
     if (!CreateProcess(NULL, call_string_argv, NULL, NULL, TRUE, NULL, NULL, NULL, &si, &pi))
     {
 	   printf("Unable to start crash checker\n");
 	   printf("%s\n", call_string_argv);
-       exit(1);
+           exit(1);
     }
 
     free(call_string_argv);

@@ -18,4 +18,6 @@ Mutation
         string getMutationPath();
         void setReport(string);
         string getReport(); 
+
+	~Mutation(){};
 };
