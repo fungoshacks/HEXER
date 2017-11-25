@@ -28,7 +28,7 @@ MutationFactory::new_mutation()
 {
 
    Mutation *new_mutation;
-   Mutator *random_mutator = _mutators[0];
+   Mutator *random_mutator = _mutators[rand() % _mutators.size()];
 
    new_mutation = random_mutator->mutate(_corpus_paths[rand() % _corpus_paths.size()]);
 

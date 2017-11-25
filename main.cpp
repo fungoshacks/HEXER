@@ -2,7 +2,6 @@
 #include "MutationFactory.h"
 #include "Mutation.h"
 #include "time.h"
-#include <unistd.h>
 #include <thread>
 
 void usage();
