@@ -1,68 +1,49 @@
 #include "ByteRepeate.h"
-
+#include <iostream>
+#include <fstream>
 
 Mutation *
 ByteRepeate::mutate(string corpus)
 {
 
-	printf(corpus.c_str());
-	Mutation *mutation;
-	FILE *f_mutation;
-	FILE *tempFile;
-	int rand_offset, f_size = 0;
-	unsigned char x = '\0';
-	unsigned int repeat[10] = { 1, 10, 32, 64, 128, 256, 512, 8, 16, 1024 };
-	string tempFilename;
+    Mutation *mutation;
+    string mutation_path = "tmp\\";
+    int rand_offset, rand_multiplier;
+    static const int MAX_MULTIPLIER = 10;
+    unsigned char multi_me;
 
-	mutation = new Mutation();
-	mutation->setCorpus(corpus);
-	mutation->setMutationPath(tmpnam(NULL));
+    /* Mutation object to return
+     * set used corpus and the path to the mutation in the FS 
+     */
+    mutation_path = random_filename(mutation_path);
+    mutation = new Mutation();
+    mutation->setCorpus(corpus);
+    mutation->setMutationPath(mutation_path);
 
-	/* Create a copy of corpus to mutate with */
-	CopyFile(corpus.c_str(), mutation->getMutationPath().c_str(), false);
-	f_mutation = fopen(mutation->getMutationPath().c_str(), "wb+"); //open binary
-	tempFilename = mutation->getMutationPath().append("tmp____");
-	tempFile = fopen(tempFilename.c_str(), "wb+"); //open binary
+    /* Read orig corpus in buffer */
+    ifstream file(corpus, std::ios::binary | std::ios::ate);
+    streamsize size = file.tellg();
+    file.seekg(0, std::ios::beg);
+    vector<char> mutation_buffer(size);
 
-	if ( f_mutation != NULL ) {
+    if ( file.read(mutation_buffer.data(), size )) {
 
-		fseek(f_mutation, 0, SEEK_END);
-		f_size = ftell(f_mutation);
-		printf("\n%d\n", f_size);
+        for ( int cycles = 0; cycles < 65; cycles++ ) {
 
-		/* Hier dann fette hamming dist */
-		for (int cycle = 0; cycle < 65; cycle++) {
+	    rand_offset = rand() % size;
+	    rand_multiplier = rand() % MAX_MULTIPLIER;
+	    multi_me = mutation_buffer[rand_offset];
 
-			rewind(f_mutation);
-			rand_offset = rand() % 5;
+	    for (int round = 0; round < rand_multiplier; round++) {
+	        mutation_buffer.insert(mutation_buffer.begin() + rand_offset, multi_me); 
+	    }
 
-			fseek(f_mutation, rand_offset, SEEK_SET);
-			fread(&x, 1, 1, f_mutation);
-			fseek(f_mutation, -1, SEEK_CUR);
-
-			char tmpX;
-			fread(&x, 1, 1, f_mutation);
-			unsigned int occurances = repeat[rand() % 10]; // how often do we clone?
-			vector<char> buffer; //build char array of clones which we want to write
-
-			for (unsigned int occ = 0; occ < occurances; occ++) {
-				buffer.push_back(x);
-			}
-			for (unsigned int dat = 0; dat < rand_offset; dat++) { //write first part of file to temp file
-				fread(&tmpX, 1, 1, f_mutation);
-				fwrite(&tmpX, 1, 1, tempFile);
-			}
-			
-			fwrite(buffer.data(), sizeof(char), sizeof(buffer.data()), tempFile); //drop that shit*n
-			
-			for (unsigned int dat = rand_offset; dat < f_size; dat++) { //write end of file to temp file
-				fread(&tmpX, 1, 1, f_mutation);
-				fwrite(&tmpX, 1, 1, tempFile);
-			}
-		}
-		f_mutation = tempFile;
-		fclose(f_mutation); //mic dropped.
 	}
 
-	return mutation;
+	ofstream mutation_file(mutation->getMutationPath(), std::ios::out | std::ofstream::binary);
+	copy(mutation_buffer.begin(), mutation_buffer.end(), ostreambuf_iterator<char>(mutation_file));
+    }
+
+    return mutation;
 }
+
