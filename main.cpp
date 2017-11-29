@@ -5,12 +5,14 @@
 #include <thread>
 
 void usage();
+void logo();
 void work(string, string, int);
 void check_crash(string, string);
 
 int 
 main(int argc, char *argv[])
 {
+
     if ( argc < 3 )
         usage();
 
@@ -19,9 +21,10 @@ main(int argc, char *argv[])
     string path_corpuses = argv[2];
     std::thread threads[NUM_THREADS];
     //NUM_THREADS = atoi(argv[3]); //has to be const value
+    logo();
 
     for (unsigned int i = 0; i < NUM_THREADS; i++) {
-	threads[i] = std::thread(work,path_exe, path_corpuses, i);
+	threads[i] = std::thread(work,path_exe, path_corpuses, i * 1337);
     }
 
     for (unsigned int i = 0; i < NUM_THREADS; i++) {
@@ -69,6 +72,7 @@ check_crash(string path_exe, string path_mutation)
     LPSTR call_string_argv;
     string python_call = "python crash_analyzer.py \"";
 
+    printf("[!] Issue with: %s\n", path_mutation.c_str());
     call_string_argv = (LPSTR)malloc(strlen(python_call.c_str()) + strlen(path_exe.c_str()) +
 		    strlen(path_mutation.c_str()) + 2);
     strcpy(call_string_argv, python_call.c_str());
@@ -85,6 +89,17 @@ check_crash(string path_exe, string path_mutation)
 
     free(call_string_argv);
 
+}
+
+void
+logo()
+{
+    printf(" _   _  _______   __ ___________\n");
+    printf("| | | ||  ___\\ \\ / /|  ___| ___ \n");
+    printf("| |_| || |__  \\ V / | |__ | |_/ /\n");
+    printf("|  _  ||  __| /   \\ |  __||    /\n");
+    printf("| | | || |___/ /^\\ \\| |___| |\\ \\ \n");
+    printf("\\_| |_/\\____/\\/   \\/\\____/\\_| \\_|\n");
 }
 
 void
