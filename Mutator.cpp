@@ -18,6 +18,7 @@ Mutator::random_filename(string name)
         name.append(&x, 1);
     }
 
+    name.append(".pdf");
     return name;
 
 }

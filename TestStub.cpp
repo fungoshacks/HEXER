@@ -1,7 +1,7 @@
 #include <string>
 #include "Mutation.h"
 #include "Mutator.h"
-#include "ByteRepeate.h"
+#include "ByteDel.h"
 #include "time.h"
 
 int
@@ -11,8 +11,9 @@ main(int argc, char *argv[])
     //procMon.runProcess("C:\\Users\\IEUser\\Desktop\\test.pdf");
 
     srand(time(NULL));
-    ByteRepeate repeater(0);	
-    Mutation *mut = repeater.mutate("C:\\Users\\IEUser\\Desktop\\mutateme.txt");
+    ByteDel deler(0);	
+    Mutation *mut = deler.mutate("C:\\Users\\IEUser\\Desktop\\mutateme.txt");
+    printf("%s\n", mut->getMutationPath().c_str());
 
     return 0;
 }

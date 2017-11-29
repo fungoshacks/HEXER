@@ -7,9 +7,9 @@ ByteRepeate::mutate(string corpus)
 {
 
     Mutation *mutation;
-    string mutation_path = "tmp\\";
+    string mutation_path = "tmp\\repeat";
     int rand_offset, rand_multiplier;
-    static const int MAX_MULTIPLIER = 10;
+    static const int MAX_MULTIPLIER = 30;
     unsigned char multi_me;
 
     /* Mutation object to return
@@ -28,7 +28,7 @@ ByteRepeate::mutate(string corpus)
 
     if ( file.read(mutation_buffer.data(), size )) {
 
-        for ( int cycles = 0; cycles < 65; cycles++ ) {
+        for ( int cycles = 0; cycles < 300; cycles++ ) {
 
 	    rand_offset = rand() % size;
 	    rand_multiplier = rand() % MAX_MULTIPLIER;

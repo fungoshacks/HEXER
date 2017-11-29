@@ -28,7 +28,7 @@ BitFlip::mutate(string corpus)
            fseek(f_mutation, 0, SEEK_END);
            f_size = ftell(f_mutation);
 
-           for ( int cycle = 0; cycle < 100; cycle ++ ) {
+           for ( int cycle = 0; cycle < 150; cycle ++ ) {
 
                rewind(f_mutation);
                rand_offset = rand() % f_size;
