@@ -27,7 +27,7 @@ ByteDel::mutate(string corpus)
 
     if ( file.read(mutation_buffer.data(), size )) {
 
-        for ( int cycles = 0; cycles < 1; cycles++ ) {
+        for ( int cycles = 0; cycles < 60; cycles++ ) {
 
 	    rand_offset = rand() % size;
 	    rand_range = rand() % MAX_RANGE;
