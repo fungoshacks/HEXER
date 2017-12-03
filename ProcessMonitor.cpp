@@ -27,6 +27,10 @@ ProcessMonitor::runProcess(string mutation)
     }
 
 
+    TerminateProcess(pi.hProcess, 0);
+
+    WaitForSingleObject(pi.hProcess, 500);
+
     CloseHandle(pi.hProcess);
     CloseHandle(pi.hThread);
     free(call_string_argv);
@@ -42,17 +46,20 @@ ProcessMonitor::_debugloop(HANDLE p_handle)
 
     while ( TRUE ) {
 
-	   if ( WaitForDebugEvent(&event, (DWORD)3000)){
+	   if ( WaitForDebugEvent(&event, (DWORD)3000) ) {
 
 		   switch (event.dwDebugEventCode){
 
 			   case LOAD_DLL_DEBUG_EVENT:
 				   CloseHandle(event.u.LoadDll.hFile);
 				   break;
-
+			   case CREATE_PROCESS_DEBUG_EVENT:
+				   CloseHandle(event.u.CreateProcessInfo.hFile);
+				   break;
 			   case EXCEPTION_DEBUG_EVENT:
 
 				   if ( !event.u.Exception.dwFirstChance ) {
+
 					   // Gekracht
 				   	   return TRUE;
 				   }
@@ -70,13 +77,10 @@ ProcessMonitor::_debugloop(HANDLE p_handle)
 
 
 	   }else {
-		   TerminateProcess(p_handle, 1);
-//		   DebugActiveProcessStop(GetProcessId(p_handle));
-		   CloseHandle(p_handle);
-		   return false;
+		   break;
 	   }
     }
-        
+
     return false;
 }
 

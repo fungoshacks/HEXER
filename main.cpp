@@ -47,15 +47,19 @@ work(string path_exe, string path_corpuses, int seed)
    srand(time(NULL) + seed);
    while ( true ) {
 
-       mut_tmp = mut_factory.new_mutation();
-       crashed = procMon.runProcess(mut_tmp->getMutationPath());
+	try{
+	       mut_tmp = mut_factory.new_mutation();
+	       crashed = procMon.runProcess(mut_tmp->getMutationPath());
 
-       if ( crashed ) {
-           check_crash(path_exe, mut_tmp->getMutationPath());
-    	   crashed = false;
-       } else {
-           remove(mut_tmp->getMutationPath().c_str());
-       }
+	       if ( crashed ) {
+		   check_crash(path_exe, mut_tmp->getMutationPath());
+		   crashed = false;
+	       } else {
+		   remove(mut_tmp->getMutationPath().c_str());
+	       }
+	}catch(...){
+	
+	}
 
        delete mut_tmp;
 
@@ -100,6 +104,7 @@ logo()
     printf("|  _  ||  __| /   \\ |  __||    /\n");
     printf("| | | || |___/ /^\\ \\| |___| |\\ \\ \n");
     printf("\\_| |_/\\____/\\/   \\/\\____/\\_| \\_|\n");
+    printf("v2223\n");
 }
 
 void

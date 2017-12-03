@@ -28,7 +28,7 @@ ByteRepeate::mutate(string corpus)
 
     if ( file.read(mutation_buffer.data(), size )) {
 
-        for ( int cycles = 0; cycles < 300; cycles++ ) {
+        for ( int cycles = 0; cycles < 150; cycles++ ) {
 
 	    rand_offset = rand() % size;
 	    rand_multiplier = rand() % MAX_MULTIPLIER;

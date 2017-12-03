@@ -27,12 +27,12 @@ ByteDel::mutate(string corpus)
 
     if ( file.read(mutation_buffer.data(), size )) {
 
-        for ( int cycles = 0; cycles < 65; cycles++ ) {
+        for ( int cycles = 0; cycles < 100; cycles++ ) {
 
 	    rand_offset = rand() % size;
 	    rand_range = rand() % MAX_RANGE;
 
-	    if ( rand_offset + rand_range >= size ) {
+	    if ( rand_offset + rand_range >= size - 5 ) {
 		continue;
 	    }
 
@@ -41,7 +41,9 @@ ByteDel::mutate(string corpus)
 		mutation_buffer.erase(mutation_buffer.begin() + rand_offset );
 
 	    }
+
 	    
+	    size = mutation_buffer.size();
 	}
 
 	ofstream mutation_file(mutation->getMutationPath(), std::ios::out | std::ofstream::binary);

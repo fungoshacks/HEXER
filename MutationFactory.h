@@ -15,7 +15,7 @@ class MutationFactory
 {
     private:
         vector<string>  _corpus_paths;
-        vector<Mutator *> _mutators = {new BitFlip(0), new ByteRepeateFlip(0), new ByteInvert(0), new ByteDel(0)};
+        vector<Mutator *> _mutators = {new BitFlip(0), new ByteRepeateFlip(0),  new ByteDel(0), new ByteRepeate(0)};
 
     public:
         MutationFactory(string);

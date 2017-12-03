@@ -17,12 +17,12 @@ ByteInvert::mutate(string corpus)
 	FILE *f_mutation;
 	int rand_offset, f_size;
 	unsigned char x;
-    string mutation_path = "tmp\\bInvert_";
+        string mutation_path = "tmp\\bInvert";
 
-    mutation_path = random_filename(mutation_path);
+        mutation_path = random_filename(mutation_path);
 	mutation = new Mutation();
 	mutation->setCorpus(corpus);
-    mutation->setMutationPath(mutation_path);
+        mutation->setMutationPath(mutation_path);
 
 	/* Create a copy of corpus to mutate with */
 	CopyFile(corpus.c_str(), mutation->getMutationPath().c_str(), false);
