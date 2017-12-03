@@ -34,6 +34,9 @@ ByteRepeate::mutate(string corpus)
 	    rand_multiplier = rand() % MAX_MULTIPLIER;
 	    multi_me = mutation_buffer[rand_offset];
 
+	    if ( rand_offset + rand_multiplier >= size - MAX_MULTIPLIER )
+		    continue;
+
 	    for (int round = 0; round < rand_multiplier; round++) {
 	        mutation_buffer.insert(mutation_buffer.begin() + rand_offset, multi_me); 
 	    }

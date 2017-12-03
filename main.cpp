@@ -3,6 +3,7 @@
 #include "Mutation.h"
 #include "time.h"
 #include <thread>
+#include "windows.h"
 
 void usage();
 void logo();
@@ -90,6 +91,8 @@ check_crash(string path_exe, string path_mutation)
 	   printf("%s\n", call_string_argv);
            exit(1);
     }
+
+    Sleep(20);
 
     free(call_string_argv);
 
