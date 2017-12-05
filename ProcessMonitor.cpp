@@ -7,20 +7,19 @@ ProcessMonitor::ProcessMonitor(string call_string){
 }
 
 bool 
-ProcessMonitor::runProcess(string mutation)
+ProcessMonitor::doesCrash(string mutation)
 {
 
     STARTUPINFO si = { 0 };
     PROCESS_INFORMATION pi = { 0 };
     bool crashed = false;
     LPSTR call_string_argv;
+    string call_string_tmp = _call_string;
 
-    call_string_argv = (LPSTR)malloc(strlen(_call_string.c_str()) + strlen(mutation.c_str()) + 1);
-    strcpy(call_string_argv, _call_string.c_str());
-    strcat(call_string_argv, " ");
-    strcat(call_string_argv, mutation.c_str());
-//    DebugSetProcessKillOnExit(true);
-    
+    call_string_tmp.append(" ");
+    call_string_tmp.append(mutation);
+    call_string_argv = strdup(call_string_tmp.c_str());
+
     if (CreateProcess(NULL, call_string_argv, NULL, NULL, FALSE, DEBUG_PROCESS, NULL, NULL, &si, &pi))
     {
 	crashed = _debugloop(pi.hProcess);
@@ -28,7 +27,6 @@ ProcessMonitor::runProcess(string mutation)
 
 
     TerminateProcess(pi.hProcess, 0);
-
     WaitForSingleObject(pi.hProcess, 500);
 
     CloseHandle(pi.hProcess);
@@ -84,3 +82,7 @@ ProcessMonitor::_debugloop(HANDLE p_handle)
     return false;
 }
 
+string ProcessMonitor::getCallString()
+{
+    return _call_string;
+}

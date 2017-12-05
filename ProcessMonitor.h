@@ -11,5 +11,6 @@ ProcessMonitor
 	bool _debugloop(HANDLE);
     public:
 	ProcessMonitor(string);
-        bool runProcess(string);
+        bool doesCrash(string);
+	string getCallString();
 };
