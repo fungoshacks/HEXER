@@ -1,6 +1,7 @@
 #include "ProcessMonitor.h"
 #include "MutationFactory.h"
 #include "Mutation.h"
+#include "CrashAnalyser.h"
 #include "time.h"
 #include <thread>
 #include "windows.h"
@@ -42,6 +43,7 @@ work(string path_exe, string path_corpuses, int seed)
 
    Mutation *mut_tmp;
    ProcessMonitor procMon(path_exe);
+   CrashAnalyser crashAnalyser(&procMon);
    MutationFactory mut_factory(path_corpuses);
    bool crashed = false;
 
@@ -50,51 +52,20 @@ work(string path_exe, string path_corpuses, int seed)
 
 	try{
 	       mut_tmp = mut_factory.new_mutation();
-	       crashed = procMon.runProcess(mut_tmp->getMutationPath());
+	       if ( procMon.doesCrash(mut_tmp->getMutationPath()) ) {
 
-	       if ( crashed ) {
-		   check_crash(path_exe, mut_tmp->getMutationPath());
-		   crashed = false;
+		       crashAnalyser.checkcrash(mut_tmp->getMutationPath());
+			
 	       } else {
 		   remove(mut_tmp->getMutationPath().c_str());
 	       }
 	}catch(...){
-	
+	    printf("[--] Worker error");	
 	}
 
        delete mut_tmp;
 
    }
-
-}
-
-void
-check_crash(string path_exe, string path_mutation)
-{
-
-    STARTUPINFO si = { 0 };
-    PROCESS_INFORMATION pi = { 0 };
-    LPSTR call_string_argv;
-    string python_call = "python crash_analyzer.py \"";
-
-    printf("[!] Issue with: %s\n", path_mutation.c_str());
-    call_string_argv = (LPSTR)malloc(strlen(python_call.c_str()) + strlen(path_exe.c_str()) +
-		    strlen(path_mutation.c_str()) + 2);
-    strcpy(call_string_argv, python_call.c_str());
-    strcat(call_string_argv, path_exe.c_str());
-    strcat(call_string_argv, "\" ");
-    strcat(call_string_argv, path_mutation.c_str());
-
-    if (!CreateProcess(NULL, call_string_argv, NULL, NULL, TRUE, NULL, NULL, NULL, &si, &pi))
-    {
-	   printf("Unable to start crash checker\n");
-	   printf("%s\n", call_string_argv);
-           exit(1);
-    }
-
-    Sleep(20);
-
-    free(call_string_argv);
 
 }
 

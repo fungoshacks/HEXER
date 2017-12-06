@@ -63,6 +63,7 @@ CrashAnalyser::write_report( string mutation )
 	exit(1);
     }
 
+    rename(mutation.c_str(), mutation.append(".issue").c_str());
     Sleep(10);
     TerminateProcess(pi.hProcess, 0);
     CloseHandle(pi.hProcess);
