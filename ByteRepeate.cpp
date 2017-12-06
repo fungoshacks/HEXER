@@ -9,7 +9,7 @@ ByteRepeate::mutate(string corpus)
     Mutation *mutation;
     string mutation_path = "tmp\\repeat";
     int rand_offset, rand_multiplier;
-    static const int MAX_MULTIPLIER = 30;
+    static const int MAX_MULTIPLIER = 10;
     unsigned char multi_me;
 
     /* Mutation object to return

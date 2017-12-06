@@ -18,7 +18,7 @@ main(int argc, char *argv[])
     if ( argc < 3 )
         usage();
 
-    const int NUM_THREADS = 10;
+    const int NUM_THREADS = 5;
     string path_exe = argv[1];
     string path_corpuses = argv[2];
     std::thread threads[NUM_THREADS];
@@ -72,12 +72,12 @@ work(string path_exe, string path_corpuses, int seed)
 void
 logo()
 {
-    printf(" _   _  _______   __ ___________\n");
-    printf("| | | ||  ___\\ \\ / /|  ___| ___ \n");
-    printf("| |_| || |__  \\ V / | |__ | |_/ /\n");
-    printf("|  _  ||  __| /   \\ |  __||    /\n");
-    printf("| | | || |___/ /^\\ \\| |___| |\\ \\ \n");
-    printf("\\_| |_/\\____/\\/   \\/\\____/\\_| \\_|\n");
+    printf("\t\t\t _   _  _______   __ ___________\n");
+    printf("\t\t\t| | | ||  ___\\ \\ / /|  ___| ___ \n");
+    printf("\t\t\t| |_| || |__  \\ V / | |__ | |_/ /\n");
+    printf("\t\t\t|  _  ||  __| /   \\ |  __||    /\n");
+    printf("\t\t\t| | | || |___/ /^\\ \\| |___| |\\ \\ \n");
+    printf("\t\t\t\\_| |_/\\____/\\/   \\/\\____/\\_| \\_|\n");
     printf("v2223\n");
 }
 

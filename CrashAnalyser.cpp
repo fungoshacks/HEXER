@@ -1,7 +1,7 @@
 #include "CrashAnalyser.h"
 #include "ProcessMonitor.h"
 
-const string CrashAnalyser::CDB_CALL = "cdb -g -c Q";
+const string CrashAnalyser::CDB_CALL = "cdb -g -kqm -c Q ";
 
 CrashAnalyser::CrashAnalyser(ProcessMonitor *procMon){
     _procMon = procMon;
@@ -44,18 +44,19 @@ CrashAnalyser::write_report( string mutation )
     STARTUPINFO si = { 0 };
     PROCESS_INFORMATION pi = { 0 };
     LPSTR call_string_windows;
-    string call_string_debug;
+    string call_string_debug, saved_crash;
     
     call_string_debug.append(CDB_CALL);
-    call_string_debug.append(_procMon->getCallString());
-    call_string_debug.append(" ");
-    call_string_debug.append(mutation);
-    call_string_debug.append(" > ");
+    call_string_debug.append("-logo ");
     call_string_debug.append(mutation);
     call_string_debug.append(".report");
+    call_string_debug.append(" \"");
+    call_string_debug.append(_procMon->getCallString());
+    call_string_debug.append("\" \"");
+    call_string_debug.append(mutation);
+    call_string_debug.append("\"");
 
     call_string_windows = strdup(call_string_debug.c_str());
-
 	
     if (!CreateProcess(NULL, call_string_windows, NULL, NULL, FALSE, NULL, NULL, NULL, &si, &pi))
     {
@@ -63,8 +64,11 @@ CrashAnalyser::write_report( string mutation )
 	exit(1);
     }
 
-    rename(mutation.c_str(), mutation.append(".issue").c_str());
-    Sleep(10);
+    Sleep(10000);
+
+    saved_crash = mutation;
+    saved_crash.append(".crash");
+    rename(mutation.c_str(), saved_crash.c_str());
     TerminateProcess(pi.hProcess, 0);
     CloseHandle(pi.hProcess);
     CloseHandle(pi.hThread);
