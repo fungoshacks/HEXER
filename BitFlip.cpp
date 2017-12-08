@@ -6,7 +6,7 @@ BitFlip::mutate(string corpus)
 
     Mutation *mutation;
     FILE *f_mutation;
-    string mutation_path = "tmp\\";
+    string mutation_path = "C:\\Users\\IEUser\\Desktop\\hexer\\tmp\\";
     int rand_offset, f_size;
     int xor_values[8] = {1,2,4,8,16,32,64,128};
     unsigned char x;
@@ -28,7 +28,7 @@ BitFlip::mutate(string corpus)
            fseek(f_mutation, 0, SEEK_END);
            f_size = ftell(f_mutation);
 
-           for ( int cycle = 0; cycle < 150; cycle ++ ) {
+           for ( int cycle = 0; cycle < 250; cycle ++ ) {
 
                rewind(f_mutation);
                rand_offset = rand() % f_size;

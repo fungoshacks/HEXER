@@ -7,7 +7,7 @@ ByteDel::mutate(string corpus)
 {
 
     Mutation *mutation;
-    string mutation_path = "tmp\\bDel";
+    string mutation_path = "C:\\Users\\IEUser\\Desktop\\hexer\\tmp\\";
     int rand_offset, rand_range;
     const int MAX_RANGE = 10;
 
@@ -27,7 +27,7 @@ ByteDel::mutate(string corpus)
 
     if ( file.read(mutation_buffer.data(), size )) {
 
-        for ( int cycles = 0; cycles < 100; cycles++ ) {
+        for ( int cycles = 0; cycles < 250; cycles++ ) {
 
 	    rand_offset = rand() % size;
 	    rand_range = rand() % MAX_RANGE;

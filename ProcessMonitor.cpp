@@ -20,62 +20,68 @@ ProcessMonitor::doesCrash(string mutation)
     call_string_tmp.append(mutation);
     call_string_argv = strdup(call_string_tmp.c_str());
 
-    if (CreateProcess(NULL, call_string_argv, NULL, NULL, FALSE, DEBUG_PROCESS, NULL, NULL, &si, &pi))
+    if ( CreateProcess(NULL, call_string_argv, NULL, NULL, FALSE, DEBUG_PROCESS, NULL, NULL, &si, &pi) )
     {
-	crashed = _debugloop(pi.hProcess);
+	crashed = _debugloop(&pi);
     }
 
 
+    DebugActiveProcessStop(pi.dwProcessId);
     TerminateProcess(pi.hProcess, 0);
     WaitForSingleObject(pi.hProcess, 500);
 
-    CloseHandle(pi.hProcess);
     CloseHandle(pi.hThread);
+    CloseHandle(pi.hProcess);
+
     free(call_string_argv);
 
     return crashed;
 }
 
 bool
-ProcessMonitor::_debugloop(HANDLE p_handle)
+ProcessMonitor::_debugloop(PROCESS_INFORMATION *pi)
 {
 
     DEBUG_EVENT event;
+    bool handled = false;
+    DWORD dwStart = GetTickCount();
 
-    while ( TRUE ) {
+    while ( ( GetTickCount() ) - dwStart < 3000 ) {
+	    handled = false;
 
-	   if ( WaitForDebugEvent(&event, (DWORD)3000) ) {
+	   if ( WaitForDebugEvent(&event, (DWORD)200) ) {
 
 		   switch (event.dwDebugEventCode){
 
 			   case LOAD_DLL_DEBUG_EVENT:
 				   CloseHandle(event.u.LoadDll.hFile);
+				   ContinueDebugEvent(pi->dwProcessId, pi->dwThreadId, DBG_CONTINUE);
+				   handled = true;
 				   break;
 			   case CREATE_PROCESS_DEBUG_EVENT:
 				   CloseHandle(event.u.CreateProcessInfo.hFile);
+				   ContinueDebugEvent(pi->dwProcessId, pi->dwThreadId, DBG_CONTINUE);
+
+				   handled = true;
 				   break;
 			   case EXCEPTION_DEBUG_EVENT:
 
 				   if ( !event.u.Exception.dwFirstChance ) {
-
 					   // Gekracht
-				   	   return TRUE;
+				   	   return true;
 				   }
 
+				   ContinueDebugEvent(event.dwProcessId,
+					   event.dwThreadId,
+					   DBG_EXCEPTION_NOT_HANDLED);
 				   break;
 
 			   default:
-				   // Idgaf
+				   ContinueDebugEvent(event.dwProcessId,
+					   event.dwThreadId,
+					   DBG_EXCEPTION_NOT_HANDLED);
 				   break;
 		   }
-
-		   ContinueDebugEvent(event.dwProcessId,
-				   event.dwThreadId,
-				   DBG_EXCEPTION_NOT_HANDLED);
-
-
-	   }else {
-		   break;
 	   }
     }
 

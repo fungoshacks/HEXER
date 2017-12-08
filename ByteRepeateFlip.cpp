@@ -7,7 +7,7 @@ ByteRepeateFlip::mutate(string corpus)
 {
 
     Mutation *mutation;
-    string mutation_path = "tmp\\rflip";
+    string mutation_path = "C:\\Users\\IEUser\\Desktop\\hexer\\tmp\\";
     int rand_offset, rand_multiplier;
     static const int MAX_MULTIPLIER = 10;
     int xor_values[8] = {1,2,4,8,16,32,64,128};
@@ -30,7 +30,7 @@ ByteRepeateFlip::mutate(string corpus)
 
     if ( file.read(mutation_buffer.data(), size )) {
 
-        for ( int cycles = 0; cycles < 150; cycles++ ) {
+        for ( int cycles = 0; cycles < 250; cycles++ ) {
 
 	    rand_offset = rand() % size;
 	    rand_multiplier = rand() % MAX_MULTIPLIER;

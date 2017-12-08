@@ -13,7 +13,7 @@ CrashAnalyser::real_crash( string mutation, int rec )
    
    if ( _procMon->doesCrash(mutation) ) {
 
-	if ( rec == 3 ) {
+	if ( rec == 2 ) {
 	    return true;
 	}
 
@@ -64,14 +64,14 @@ CrashAnalyser::write_report( string mutation )
 	exit(1);
     }
 
-    Sleep(10000);
+    Sleep(20000);
+    TerminateProcess(pi.hProcess, 0);
+    CloseHandle(pi.hProcess);
+    CloseHandle(pi.hThread);
 
     saved_crash = mutation;
     saved_crash.append(".crash");
     rename(mutation.c_str(), saved_crash.c_str());
-    TerminateProcess(pi.hProcess, 0);
-    CloseHandle(pi.hProcess);
-    CloseHandle(pi.hThread);
     free( call_string_windows);
 
     printf("[+] Written Report\n");

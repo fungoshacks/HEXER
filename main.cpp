@@ -18,7 +18,7 @@ main(int argc, char *argv[])
     if ( argc < 3 )
         usage();
 
-    const int NUM_THREADS = 5;
+    const int NUM_THREADS = 4;
     string path_exe = argv[1];
     string path_corpuses = argv[2];
     std::thread threads[NUM_THREADS];
@@ -72,6 +72,7 @@ work(string path_exe, string path_corpuses, int seed)
 void
 logo()
 {
+
     printf("\t\t\t _   _  _______   __ ___________\n");
     printf("\t\t\t| | | ||  ___\\ \\ / /|  ___| ___ \n");
     printf("\t\t\t| |_| || |__  \\ V / | |__ | |_/ /\n");
@@ -79,6 +80,7 @@ logo()
     printf("\t\t\t| | | || |___/ /^\\ \\| |___| |\\ \\ \n");
     printf("\t\t\t\\_| |_/\\____/\\/   \\/\\____/\\_| \\_|\n");
     printf("v2223\n");
+
 }
 
 void

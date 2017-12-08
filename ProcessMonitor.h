@@ -8,7 +8,7 @@ ProcessMonitor
 {
     private:
 	string _call_string;
-	bool _debugloop(HANDLE);
+	bool _debugloop(PROCESS_INFORMATION *);
     public:
 	ProcessMonitor(string);
         bool doesCrash(string);

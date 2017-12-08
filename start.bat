@@ -1,1 +1,1 @@
-main.exe "C:\Program Files\Foxit Software\Foxit Reader\FoxitReader.exe" "C:\Users\IEUser\Desktop\corpuses\*"
+main.exe "C:\Program Files\Adobe\Adobe Digital Editions 4.5\DigitalEditions.exe" "C:\Users\IEUser\Desktop\corpuses\*"
