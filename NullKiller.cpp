@@ -6,7 +6,7 @@ NullKiller::mutate(string corpus)
 
     Mutation *mutation;
     string mutation_path = "C:\\Users\\IEUser\\Desktop\\hexer\\tmp\\";
-    int rand_offset;
+    int rand_offset, pos;
 
     mutation = new Mutation();
     mutation->setCorpus(corpus);
@@ -17,18 +17,18 @@ NullKiller::mutate(string corpus)
     file.seekg(0, std::ios::beg);
     vector<char> mutation_buffer(size);
     vector<char>::iterator it;
-    int pos;
 
     if ( file.read(mutation_buffer.data(), size )) {
 
-	    for ( int cycles = 0; cycles < 1; cycles++ ) {
+	    for ( int cycles = 0; cycles < 150; cycles++ ) {
+
 		it = find( mutation_buffer.begin() + (rand() % size), mutation_buffer.end(), 0x00);
 
 		if ( it != mutation_buffer.end() ) {
 
 		    *it = 0x41;
 		    pos = it - mutation_buffer.begin() + 1;
-		    for ( int i = 0; i < rand() % 20; i++ ) {
+		    for ( int i = 0; i < rand() % 30; i++ ) {
 		    	mutation_buffer.insert(mutation_buffer.begin() + pos + i, 0x41);
 		    }
 		    

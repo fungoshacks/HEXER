@@ -43,11 +43,9 @@ ProcessMonitor::_debugloop(PROCESS_INFORMATION *pi)
 {
 
     DEBUG_EVENT event;
-    bool handled = false;
     DWORD dwStart = GetTickCount();
 
-    while ( ( GetTickCount() ) - dwStart < 3000 ) {
-	    handled = false;
+    while ( ( GetTickCount() ) - dwStart < 4000 ) {
 
 	   if ( WaitForDebugEvent(&event, (DWORD)200) ) {
 
@@ -56,20 +54,16 @@ ProcessMonitor::_debugloop(PROCESS_INFORMATION *pi)
 			   case LOAD_DLL_DEBUG_EVENT:
 				   CloseHandle(event.u.LoadDll.hFile);
 				   ContinueDebugEvent(pi->dwProcessId, pi->dwThreadId, DBG_CONTINUE);
-				   handled = true;
 				   break;
 			   case CREATE_PROCESS_DEBUG_EVENT:
 				   CloseHandle(event.u.CreateProcessInfo.hFile);
 				   ContinueDebugEvent(pi->dwProcessId, pi->dwThreadId, DBG_CONTINUE);
-
-				   handled = true;
 				   break;
 			   case EXCEPTION_DEBUG_EVENT:
 
-				   if ( !event.u.Exception.dwFirstChance ) {
-					   // Gekracht
+				   /* Yeay */
+				   if ( !event.u.Exception.dwFirstChance ) 
 				   	   return true;
-				   }
 
 				   ContinueDebugEvent(event.dwProcessId,
 					   event.dwThreadId,

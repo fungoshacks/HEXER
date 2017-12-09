@@ -1,7 +1,7 @@
 #include "CrashAnalyser.h"
 #include "ProcessMonitor.h"
 
-const string CrashAnalyser::CDB_CALL = "cdb -g -kqm -c Q ";
+const string CrashAnalyser::CDB_CALL = "cdb -g -kqm -c \"!load winext\\msec.dll;!exploitable -m;Q\" ";
 
 CrashAnalyser::CrashAnalyser(ProcessMonitor *procMon){
     _procMon = procMon;
@@ -13,7 +13,7 @@ CrashAnalyser::real_crash( string mutation, int rec )
    
    if ( _procMon->doesCrash(mutation) ) {
 
-	if ( rec == 2 ) {
+	if ( rec == 3 ) {
 	    return true;
 	}
 
@@ -29,10 +29,10 @@ CrashAnalyser::checkcrash( string mutation )
 {
     if ( real_crash ( mutation, 0 ) ) {
 
-	printf("[++] Issue with: %s\n", mutation.c_str());	
 	write_report(mutation);
 
     } else { 
+	remove(mutation.c_str());
 	printf("[-] False - Positive :(\n");
     } 
 }
@@ -55,6 +55,7 @@ CrashAnalyser::write_report( string mutation )
     call_string_debug.append("\" \"");
     call_string_debug.append(mutation);
     call_string_debug.append("\"");
+    call_string_debug.append(" >NUL");
 
     call_string_windows = strdup(call_string_debug.c_str());
 	

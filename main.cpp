@@ -15,23 +15,24 @@ int
 main(int argc, char *argv[])
 {
 
-    if ( argc < 3 )
+    if ( argc < 4 )
         usage();
 
-    const int NUM_THREADS = 4;
     string path_exe = argv[1];
     string path_corpuses = argv[2];
-    std::thread threads[NUM_THREADS];
-    //NUM_THREADS = atoi(argv[3]); //has to be const value
+    int num_threads = atoi(argv[3]);
+    std::thread *threads = new std::thread[num_threads];
     logo();
 
-    for (unsigned int i = 0; i < NUM_THREADS; i++) {
+    for (unsigned int i = 0; i < num_threads; i++) {
 	threads[i] = std::thread(work,path_exe, path_corpuses, i * 1337);
     }
 
-    for (unsigned int i = 0; i < NUM_THREADS; i++) {
+    for (unsigned int i = 0; i < num_threads; i++) {
 	threads[i].join();
     }
+
+    delete threads;
     
     return 0;
 }
@@ -86,6 +87,6 @@ logo()
 void
 usage()
 {
-    printf("Usage: Hexer <path executable> <path corpus dir>");
+    printf("Usage: Hexer <path executable> <path corpus dir> <num_threads>");
     exit(0);
 }
