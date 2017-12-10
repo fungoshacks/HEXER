@@ -53,29 +53,24 @@ ProcessMonitor::_debugloop(PROCESS_INFORMATION *pi)
 
 			   case LOAD_DLL_DEBUG_EVENT:
 				   CloseHandle(event.u.LoadDll.hFile);
-				   ContinueDebugEvent(pi->dwProcessId, pi->dwThreadId, DBG_CONTINUE);
 				   break;
 			   case CREATE_PROCESS_DEBUG_EVENT:
 				   CloseHandle(event.u.CreateProcessInfo.hFile);
-				   ContinueDebugEvent(pi->dwProcessId, pi->dwThreadId, DBG_CONTINUE);
 				   break;
 			   case EXCEPTION_DEBUG_EVENT:
 
 				   /* Yeay */
 				   if ( !event.u.Exception.dwFirstChance ) 
 				   	   return true;
-
-				   ContinueDebugEvent(event.dwProcessId,
-					   event.dwThreadId,
-					   DBG_EXCEPTION_NOT_HANDLED);
 				   break;
 
 			   default:
-				   ContinueDebugEvent(event.dwProcessId,
-					   event.dwThreadId,
-					   DBG_EXCEPTION_NOT_HANDLED);
 				   break;
 		   }
+
+		   ContinueDebugEvent(event.dwProcessId,
+			   event.dwThreadId,
+			   DBG_EXCEPTION_NOT_HANDLED);
 	   }
     }
 
