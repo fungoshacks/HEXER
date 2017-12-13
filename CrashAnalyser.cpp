@@ -45,6 +45,9 @@ CrashAnalyser::write_report( string mutation )
     PROCESS_INFORMATION pi = { 0 };
     LPSTR call_string_windows;
     string call_string_debug, saved_crash;
+
+    si.hStdOutput = NULL;
+    si.hStdError = NULL;
     
     call_string_debug.append(CDB_CALL);
     call_string_debug.append("-logo ");
@@ -55,11 +58,10 @@ CrashAnalyser::write_report( string mutation )
     call_string_debug.append("\" \"");
     call_string_debug.append(mutation);
     call_string_debug.append("\"");
-    call_string_debug.append(" >NUL");
 
     call_string_windows = strdup(call_string_debug.c_str());
 	
-    if (!CreateProcess(NULL, call_string_windows, NULL, NULL, FALSE, NULL, NULL, NULL, &si, &pi))
+    if (!CreateProcess(NULL, call_string_windows, NULL, NULL, FALSE, CREATE_NO_WINDOW, NULL, NULL, &si, &pi))
     {
 	printf("[-] Failed to start CDB :(\n");
 	exit(1);
@@ -71,7 +73,7 @@ CrashAnalyser::write_report( string mutation )
     CloseHandle(pi.hThread);
 
     saved_crash = mutation;
-    saved_crash.append(".crash");
+    saved_crash.append("_CRASH_.pdf");
     rename(mutation.c_str(), saved_crash.c_str());
     free( call_string_windows);
 

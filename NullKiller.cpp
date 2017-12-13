@@ -5,7 +5,7 @@ NullKiller::mutate(string corpus)
 {
 
     Mutation *mutation;
-    string mutation_path = "C:\\Users\\IEUser\\Desktop\\hexer\\tmp\\";
+    string mutation_path = "tmp\\";
     int rand_offset, pos;
 
     mutation = new Mutation();

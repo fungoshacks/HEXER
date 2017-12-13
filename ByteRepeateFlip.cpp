@@ -7,7 +7,7 @@ ByteRepeateFlip::mutate(string corpus)
 {
 
     Mutation *mutation;
-    string mutation_path = "C:\\Users\\IEUser\\Desktop\\hexer\\tmp\\";
+    string mutation_path = "tmp\\";
     int rand_offset, rand_multiplier;
     static const int MAX_MULTIPLIER = 10;
     int xor_values[8] = {1,2,4,8,16,32,64,128};

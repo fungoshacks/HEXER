@@ -7,7 +7,7 @@ ByteDel::mutate(string corpus)
 {
 
     Mutation *mutation;
-    string mutation_path = "C:\\Users\\IEUser\\Desktop\\hexer\\tmp\\";
+    string mutation_path = "tmp\\";
     int rand_offset, rand_range;
     const int MAX_RANGE = 10;
 
