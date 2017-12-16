@@ -2,8 +2,9 @@
 
 using namespace std;
 
-ProcessMonitor::ProcessMonitor(string call_string){
+ProcessMonitor::ProcessMonitor(string call_string, int ttl){
 	_call_string = call_string;
+	_ttl = ttl;
 }
 
 bool 
@@ -45,7 +46,7 @@ ProcessMonitor::_debugloop(PROCESS_INFORMATION *pi)
     DEBUG_EVENT event;
     DWORD dwStart = GetTickCount();
 
-    while ( ( GetTickCount() ) - dwStart < 4000 ) {
+    while ( ( GetTickCount() ) - dwStart < _ttl ) {
 
 	   if ( WaitForDebugEvent(&event, (DWORD)200) ) {
 

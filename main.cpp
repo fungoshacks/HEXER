@@ -8,24 +8,25 @@
 
 void usage();
 void logo();
-void work(string, string, int);
+void work(string, string, int, int);
 void check_crash(string, string);
 
 int 
 main(int argc, char *argv[])
 {
 
-    if ( argc < 4 )
+    if ( argc < 5 )
         usage();
 
     string path_exe = argv[1];
     string path_corpuses = argv[2];
     int num_threads = atoi(argv[3]);
+    int ttl = atoi(argv[4]);
     std::thread *threads = new std::thread[num_threads];
     logo();
 
     for (unsigned int i = 0; i < num_threads; i++) {
-	threads[i] = std::thread(work,path_exe, path_corpuses, i * 1337);
+	threads[i] = std::thread(work,path_exe, path_corpuses, i * 1337, ttl);
     }
 
     for (unsigned int i = 0; i < num_threads; i++) {
@@ -39,11 +40,11 @@ main(int argc, char *argv[])
 
 /* Multi-Thread this */
 void
-work(string path_exe, string path_corpuses, int seed)
+work(string path_exe, string path_corpuses, int seed, int ttl)
 {
 
    Mutation *mut_tmp;
-   ProcessMonitor procMon(path_exe);
+   ProcessMonitor procMon(path_exe, ttl);
    CrashAnalyser crashAnalyser(&procMon);
    MutationFactory mut_factory(path_corpuses);
    bool crashed = false;
@@ -133,6 +134,6 @@ logo()
 void
 usage()
 {
-    printf("Usage: Hexer <path executable> <path corpus dir> <num_threads>");
+    printf("Usage: Hexer <path executable> <path corpus dir> <num_threads> <ttl>");
     exit(0);
 }
