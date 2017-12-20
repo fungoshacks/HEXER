@@ -12,6 +12,6 @@ class ByteRepeate :
 {
 public:
 	using Mutator::Mutator;
-	Mutation *mutate(string);
+	Mutation *mutate(vector<char>);
 };
 

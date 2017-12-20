@@ -15,10 +15,10 @@ using namespace std;
 class MutationFactory
 {
     private:
-        vector<string>  _corpus_paths;
-        vector<Mutator *> _mutators = {new BitFlip(0), new ByteRepeateFlip(0),  new ByteDel(0), new NullKiller(0)};
+        vector<vector<char>> *_corpuses;
+        vector<Mutator *> _mutators;
 
     public:
-        MutationFactory(string);
+        MutationFactory(vector<vector<char>> *, int);
         Mutation *new_mutation();
 };

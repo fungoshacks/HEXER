@@ -5,28 +5,37 @@
 #include "time.h"
 #include <thread>
 #include "windows.h"
+#include <vector>
+#include <iostream>
+#include <fstream>
 
 void usage();
 void logo();
-void work(string, string, int, int);
+void work(string, string, int, int, int);
 void check_crash(string, string);
+vector<vector<char>> *buildCorpuses(string);
+
+vector<vector<char>> *_corpuses;
 
 int 
-main(int argc, char *argv[])
+main( int argc, char *argv[] )
 {
 
-    if ( argc < 5 )
+    if ( argc < 6 )
         usage();
 
     string path_exe = argv[1];
     string path_corpuses = argv[2];
     int num_threads = atoi(argv[3]);
     int ttl = atoi(argv[4]);
+    int aggr = atoi(argv[5]);
     std::thread *threads = new std::thread[num_threads];
     logo();
 
+    _corpuses = buildCorpuses(path_corpuses);
+
     for (unsigned int i = 0; i < num_threads; i++) {
-	threads[i] = std::thread(work,path_exe, path_corpuses, i * 1337, ttl);
+	threads[i] = std::thread(work,path_exe, path_corpuses, i * 1337, ttl, aggr);
     }
 
     for (unsigned int i = 0; i < num_threads; i++) {
@@ -38,15 +47,14 @@ main(int argc, char *argv[])
     return 0;
 }
 
-/* Multi-Thread this */
 void
-work(string path_exe, string path_corpuses, int seed, int ttl)
+work(string path_exe, string path_corpuses, int seed, int ttl, int aggr)
 {
 
    Mutation *mut_tmp;
    ProcessMonitor procMon(path_exe, ttl);
    CrashAnalyser crashAnalyser(&procMon);
-   MutationFactory mut_factory(path_corpuses);
+   MutationFactory mut_factory(_corpuses, aggr);
    bool crashed = false;
 
    srand(time(NULL) + seed);
@@ -68,6 +76,50 @@ work(string path_exe, string path_corpuses, int seed, int ttl)
        delete mut_tmp;
 
    }
+
+}
+
+vector<vector<char>> *
+buildCorpuses(string corpus_dir)
+{
+
+    vector<vector<char>> *corpuses = new vector<vector<char>>();
+    vector<string>  corpus_paths;
+    HANDLE hFind;
+    WIN32_FIND_DATA data; 
+    int cntr = 0;
+    string tmp_path;
+
+    /* Get a list of all corps paths */
+    hFind = FindFirstFile(corpus_dir.c_str(), &data);
+    if (hFind != INVALID_HANDLE_VALUE) {
+        do {
+           if ( cntr < 2 ) {
+               cntr++;
+               continue;
+            }
+
+	    
+	    tmp_path = string(corpus_dir).substr(0, strlen(corpus_dir.c_str()) -1 ).append(data.cFileName);
+
+	    ifstream file(tmp_path, std::ios::binary | std::ios::ate);
+	    streamsize size = file.tellg();
+	    file.seekg(0, std::ios::beg);
+	    vector<char> corpus_buffer(size);
+
+    	    if ( file.read(corpus_buffer.data(), size )) {
+
+		corpuses->push_back(corpus_buffer);
+
+	    }
+
+        } while (FindNextFile(hFind, &data));
+        FindClose(hFind);
+    }
+
+
+
+    return corpuses;
 
 }
 
@@ -134,6 +186,6 @@ logo()
 void
 usage()
 {
-    printf("Usage: Hexer <path executable> <path corpus dir> <num_threads> <ttl>");
+    printf("Usage: Hexer <path executable> <path corpus dir> <num_threads> <ttl> <aggression>");
     exit(0);
 }

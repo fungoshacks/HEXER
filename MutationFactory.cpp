@@ -1,25 +1,13 @@
 #include "MutationFactory.h"
 
-MutationFactory::MutationFactory(string corpus_dir)
+MutationFactory::MutationFactory(vector<vector<char>> *corpuses, int aggr)
 {
 
-   HANDLE hFind;
-   WIN32_FIND_DATA data; 
-   int cntr = 0;
+    _corpuses = corpuses;
 
-   /* Get a list of all corpuses found in a corpus_dir */
-   hFind = FindFirstFile(corpus_dir.c_str(), &data);
-   if (hFind != INVALID_HANDLE_VALUE) {
-       do {
-          if ( cntr < 2 ) {
-              cntr++;
-              continue;
-           }
-           _corpus_paths.push_back(string(corpus_dir).substr(0, 
-				   strlen(corpus_dir.c_str()) -1 ).append(data.cFileName));
-       } while (FindNextFile(hFind, &data));
-       FindClose(hFind);
-   }
+    //_mutators = {new BitFlip(aggr)};
+    _mutators = {new BitFlip(aggr), new ByteRepeate(aggr),
+	    new ByteRepeateFlip(aggr), new NullKiller(aggr), new ByteDel(aggr)};
 
 }
 
@@ -29,8 +17,9 @@ MutationFactory::new_mutation()
 
    Mutation *new_mutation;
    Mutator *random_mutator = _mutators[rand() % _mutators.size()];
+   vector<char> corpus = (*_corpuses)[rand() %  _corpuses->size()];
 
-   new_mutation = random_mutator->mutate(_corpus_paths[rand() % _corpus_paths.size()]);
+   new_mutation = random_mutator->mutate(corpus);
 
    return new_mutation;
 

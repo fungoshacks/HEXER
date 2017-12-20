@@ -12,6 +12,6 @@ class ByteRepeateFlip :
 {
 public:
 	using Mutator::Mutator;
-	Mutation *mutate(string);
+	Mutation *mutate(vector<char>);
 };
 

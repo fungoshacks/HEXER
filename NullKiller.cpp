@@ -1,40 +1,32 @@
 #include "NullKiller.h"
 
 Mutation*
-NullKiller::mutate(string corpus)
+NullKiller::mutate(vector<char> corpus)
 {
 
     Mutation *mutation;
-    string mutation_path = "tmp\\";
+    string mutation_path = "tmp\\NullKiller";
     int rand_offset, pos;
 
     mutation = new Mutation();
-    mutation->setCorpus(corpus);
+    //mutation->setCorpus(corpus);
     mutation->setMutationPath(random_filename(mutation_path));
-
-    ifstream file(corpus, std::ios::binary | std::ios::ate);
-    streamsize size = file.tellg();
-    file.seekg(0, std::ios::beg);
-    vector<char> mutation_buffer(size);
     vector<char>::iterator it;
+    vector<char> mutation_buffer = corpus;
 
-    if ( file.read(mutation_buffer.data(), size )) {
+    for ( int cycles = 0; cycles < _cycles; cycles++ ) {
 
-	    for ( int cycles = 0; cycles < 150; cycles++ ) {
+	it = find( mutation_buffer.begin() + (rand() % mutation_buffer.size()), mutation_buffer.end(), 0x00);
 
-		it = find( mutation_buffer.begin() + (rand() % size), mutation_buffer.end(), 0x00);
+	if ( it != mutation_buffer.end() ) {
 
-		if ( it != mutation_buffer.end() ) {
-
-		    *it = 0x41;
-		    pos = it - mutation_buffer.begin() + 1;
-		    for ( int i = 0; i < rand() % 30; i++ ) {
-		    	mutation_buffer.insert(mutation_buffer.begin() + pos + i, 0x41);
-		    }
-		    
-		}
-
+	    *it = 0x41;
+	    pos = it - mutation_buffer.begin() + 1;
+	    for ( int i = 0; i < rand() % 30; i++ ) {
+		mutation_buffer.insert(mutation_buffer.begin() + pos + i, 0x41);
 	    }
+	    
+	}
 
     }
 
