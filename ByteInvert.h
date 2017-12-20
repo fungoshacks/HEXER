@@ -12,7 +12,7 @@ class ByteInvert :
 {
 public:
 	using Mutator::Mutator;
-	Mutation *mutate(string);
+	Mutation *mutate(vector<char>);
 	unsigned char reverse(unsigned char);
 };
 

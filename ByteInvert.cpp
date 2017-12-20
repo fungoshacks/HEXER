@@ -10,44 +10,47 @@ ByteInvert::reverse(unsigned char b) {
 
 
 Mutation *
-ByteInvert::mutate(string corpus)
+ByteInvert::mutate(vector<char> corpus)
 {
 
-	Mutation *mutation;
-	FILE *f_mutation;
-	int rand_offset, f_size;
-	unsigned char x;
-        string mutation_path = "tmp\\bInvert";
+    Mutation *mutation;
+    string mutation_path = "tmp\\Inverter";
+    static const int MAX_RANGE = 10;
+    int rand_offset, rand_range;
+    unsigned char flipme;
+    vector<char> mutation_buffer = corpus;
 
-        mutation_path = random_filename(mutation_path);
-	mutation = new Mutation();
-	mutation->setCorpus(corpus);
-        mutation->setMutationPath(mutation_path);
+    /* Mutation object to return
+     * set used corpus and the path to the mutation in the FS 
+     */
+    mutation_path = random_filename(mutation_path);
+    mutation = new Mutation();
+    //mutation->setCorpus(corpus);
+    mutation->setMutationPath(mutation_path);
 
-	/* Create a copy of corpus to mutate with */
-	CopyFile(corpus.c_str(), mutation->getMutationPath().c_str(), false);
-	f_mutation = fopen(mutation->getMutationPath().c_str(), "r+");
+    for ( int cycles = 0; cycles < _cycles; cycles++ ) {
 
-	if (f_mutation != NULL) {
+	rand_offset = rand() % mutation_buffer.size();
+	rand_range = rand() % MAX_RANGE;
 
-		fseek(f_mutation, 0, SEEK_END);
-		f_size = ftell(f_mutation);
+        flipme = mutation_buffer[rand_offset];
+	flipme = reverse(flipme);
 
-		for (int cycle = 0; cycle < 65; cycle++) {
-
-			rewind(f_mutation);
-			rand_offset = rand() % f_size;
-			fseek(f_mutation, rand_offset, SEEK_SET);
-			fread(&x, 1, 1, f_mutation);
-			fseek(f_mutation, -1, SEEK_CUR);
-			x = reverse(x);
-			fwrite(&x, 1, 1, f_mutation);
-
-		}
-
-		fclose(f_mutation);
-
+	if ( rand_offset + rand_range >= mutation_buffer.size() - MAX_RANGE ) {
+	    continue;
 	}
 
-	return mutation;
+	for ( int round = 0; round < rand_range; round++ ) {
+	     flipme = mutation_buffer[rand_offset + round];
+	     flipme = reverse(flipme);
+
+	     mutation_buffer[rand_offset + round] = flipme;
+	}
+    }
+
+    ofstream mutation_file(mutation->getMutationPath(), std::ios::out | std::ofstream::binary);
+    copy(mutation_buffer.begin(), mutation_buffer.end(), ostreambuf_iterator<char>(mutation_file));
+
+    return mutation;
+
 }
