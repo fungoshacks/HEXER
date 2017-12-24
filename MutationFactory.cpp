@@ -4,16 +4,16 @@ MutationFactory::MutationFactory(vector<vector<char>> *corpuses, int aggr)
 {
 
     _corpuses = corpuses;
-
     _mutators = {
 	    new BitFlip(aggr),
 	    new ByteRepeate(aggr),
 	    new ByteRepeateFlip(aggr),
 	    new NullKiller(aggr),
 	    new ByteDel(aggr),
-	    new ByteInvert(aggr)
+	    new ByteInvert(aggr),
+	    new ByteSpecial(aggr)
     };
-
+ 
 }
 
 Mutation *

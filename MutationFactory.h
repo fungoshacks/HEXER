@@ -9,6 +9,7 @@
 #include "ByteRepeateFlip.h"
 #include "ByteDel.h"
 #include "NullKiller.h"
+#include "ByteSpecial.h"
 
 using namespace std;
 

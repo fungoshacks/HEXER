@@ -34,6 +34,7 @@ ByteDel::mutate(vector<char> corpus)
 
     ofstream mutation_file(mutation->getMutationPath(), std::ios::out | std::ofstream::binary);
     copy(mutation_buffer.begin(), mutation_buffer.end(), ostreambuf_iterator<char>(mutation_file));
+    mutation_file.close();
     
 
     return mutation;

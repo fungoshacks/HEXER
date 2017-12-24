@@ -26,13 +26,12 @@ ProcessMonitor::doesCrash(string mutation)
 	crashed = _debugloop(&pi);
     }
 
-
     DebugActiveProcessStop(pi.dwProcessId);
     TerminateProcess(pi.hProcess, 0);
     WaitForSingleObject(pi.hProcess, 500);
 
-    CloseHandle(pi.hThread);
     CloseHandle(pi.hProcess);
+    CloseHandle(pi.hThread);
 
     free(call_string_argv);
 
