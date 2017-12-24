@@ -20,6 +20,10 @@ ByteSpecial::mutate(vector<char> corpus)
     for ( int cycles = 0; cycles < _cycles; cycles++ ) {
 	chosen_values = byte_values[rand() % byte_values.size()];
 	rand_offset = rand() % mutation_buffer.size();
+	if ( ( rand_offset + chosen_values.size() ) > mutation_buffer.size() - 10 ){
+            continue;
+
+	}
 	for ( int i = 0; i < chosen_values.size(); i++ ) {
 	    mutation_buffer[rand_offset + i] = chosen_values[i];
 	}
